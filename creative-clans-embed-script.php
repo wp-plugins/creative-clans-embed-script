@@ -2,8 +2,8 @@
 /*
 Plugin Name: Creative Clans Embed Script
 Plugin URI: http://www.creativeclans.nl
-Description: Gives the possibility to add scripts to the end of the 'content' of any page or post. 
-Version: 1.0
+Description: Gives the possibility to add scripts to the beginning and/or the end of the 'content' of any page or post. 
+Version: 1.1
 Author: Guido Tonnaer
 Author URI: http://www.creativeclans.nl
 
@@ -36,26 +36,28 @@ add_filter('the_content', 'ccembedscript_display_hook');
 add_filter('the_excerpt', 'ccembedscript_display_hook');
 	
 /**
- * Loop through the settings and check whether ccembedscript should be outputted.
+ * output the scripts.
  */
 function ccembedscript_display_hook($content='') {
 	global $post;
-  return $content . get_post_meta($post->ID, '_ccembedscripttext', true);
+  return get_post_meta($post->ID, '_ccembedscripttexttop', true) . $content . get_post_meta($post->ID, '_ccembedscripttext', true);
 }
 
 /**
- * Displays a text that allows users to insert the scripts for the post or page
+ * Displays a box that allows users to insert the scripts for the post or page
  */
 function ccembedscript_meta() {
 	global $post;
 	?>
-	<label for="ccembedscripttext"><?php _e('Script to be inserted','ccembedscript') ?></label><br />
+	<label for="ccembedscripttexttop"><?php _e('Scripts to be inserted at the top','ccembedscript') ?></label><br />
+  <textarea id="ccembedscripttexttop" name="ccembedscripttexttop" /><?php echo get_post_meta($post->ID,'_ccembedscripttexttop',true); ?></textarea><br />
+	<label for="ccembedscripttext"><?php _e('Scripts to be inserted at the bottom','ccembedscript') ?></label><br />
   <textarea id="ccembedscripttext" name="ccembedscripttext" /><?php echo get_post_meta($post->ID,'_ccembedscripttext',true); ?></textarea>
 	<?php
 }
 
 /**
- * Add the checkbox defined above to post and page edit screens.
+ * Add the box defined above to post and page edit screens.
  */
 function ccembedscript_meta_box() {
 	add_meta_box('ccembedscript','Creative Clans Embed Script','ccembedscript_meta','post','side');
@@ -67,6 +69,8 @@ add_action('admin_menu', 'ccembedscript_meta_box');
  * If the post is inserted, save the script.
  */
 function ccembedscript_insert_post($pID) {
+  $text = (isset($_POST['ccembedscripttexttop'])) ? $_POST['ccembedscripttexttop'] : '';
+  update_post_meta($pID, '_ccembedscripttexttop', $text);
   $text = (isset($_POST['ccembedscripttext'])) ? $_POST['ccembedscripttext'] : '';
   update_post_meta($pID, '_ccembedscripttext', $text);
 }
