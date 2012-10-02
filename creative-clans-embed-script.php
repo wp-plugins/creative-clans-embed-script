@@ -3,11 +3,11 @@
 Plugin Name: Creative Clans Embed Script
 Plugin URI: http://www.creativeclans.nl
 Description: Gives the possibility to add scripts to the beginning and/or the end of the 'content' of any page or post. 
-Version: 1.1
+Version: 1.2
 Author: Guido Tonnaer
 Author URI: http://www.creativeclans.nl
 
-Copyright 2010 Guido Tonnaer
+Copyright 2010-2012 Guido Tonnaer
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -46,8 +46,12 @@ function ccembedscript_display_hook($content='') {
 /**
  * Displays a box that allows users to insert the scripts for the post or page
  */
-function ccembedscript_meta() {
-	global $post;
+function ccembedscript_meta($post) {
+//	global $post;
+  
+  // Use nonce for verification
+  wp_nonce_field( plugin_basename( __FILE__ ), 'ccembedscript_noncename' );
+
 	?>
 	<label for="ccembedscripttexttop"><?php _e('Scripts to be inserted at the top','ccembedscript') ?></label><br />
   <textarea id="ccembedscripttexttop" name="ccembedscripttexttop" /><?php echo get_post_meta($post->ID,'_ccembedscripttexttop',true); ?></textarea><br />
@@ -69,11 +73,36 @@ add_action('admin_menu', 'ccembedscript_meta_box');
  * If the post is inserted, save the script.
  */
 function ccembedscript_insert_post($pID) {
+
+  // if the function is called by the WP autosave feature, nothing must be saved
+  if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE )
+    return;
+    
+  // verify this came from the our screen and with proper authorization,
+  // because save_post can be triggered at other times
+
+  if ( !wp_verify_nonce( $_POST['ccembedscript_noncename'], plugin_basename( __FILE__ ) ) )
+      return;
+
+  
+  // Check permissions
+  if ( 'page' == $_POST['post_type'] ) 
+  {
+    if ( !current_user_can( 'edit_page', $pID ) )
+        return;
+  }
+  else
+  {
+    if ( !current_user_can( 'edit_post', $pID ) )
+        return;
+  }
+
+  // OK, we're authenticated: we need to find and save the data
   $text = (isset($_POST['ccembedscripttexttop'])) ? $_POST['ccembedscripttexttop'] : '';
   update_post_meta($pID, '_ccembedscripttexttop', $text);
   $text = (isset($_POST['ccembedscripttext'])) ? $_POST['ccembedscripttext'] : '';
   update_post_meta($pID, '_ccembedscripttext', $text);
 }
-add_action('wp_insert_post', 'ccembedscript_insert_post');
+add_action('save_post', 'ccembedscript_insert_post');
 
 ?>

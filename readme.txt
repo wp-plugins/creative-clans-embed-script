@@ -3,8 +3,8 @@ Contributors: tonnaer
 Donate link: http://www.creativeclans.nl
 Tags: script, embed, plugin, creative clans
 Requires at least: 2.7
-Tested up to: 3.0.1
-Stable tag: 1.1
+Tested up to: 3.4.2
+Stable tag: 1.2
 
 A plugin to add scripts to the beginning and/or the end of the 'content' of any post or page. 
 
@@ -29,6 +29,9 @@ And with the new feature, you can also use it to add the Google Website Optimize
 Now you're ready to go! Go to a post or page, open the edit screen, and on the right should appear a 'Scripts to be inserted ' box. All you have to do is insert the scripts you want to add to the beginning and/or the end of the body of the page or post.
     
 == Changelog ==
+
+= 1.2 =
+* Corrected bug that caused loss of embed script data with WP autosave feature
 
 = 1.1 =
 * You can now add scripts to the beginning of the 'content' of any post or page
