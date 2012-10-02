@@ -47,8 +47,6 @@ function ccembedscript_display_hook($content='') {
  * Displays a box that allows users to insert the scripts for the post or page
  */
 function ccembedscript_meta($post) {
-//	global $post;
-  
   // Use nonce for verification
   wp_nonce_field( plugin_basename( __FILE__ ), 'ccembedscript_noncename' );
 
