@@ -31,7 +31,7 @@ Now you're ready to go! Go to a post or page, open the edit screen, and on the r
 == Changelog ==
 
 = 1.2 =
-* Corrected bug that caused loss of the embed script data with WP autosave feature
+* Corrected bug that caused loss of the embed script snippets with WP autosave feature
 
 = 1.1 =
 * You can now add scripts to the beginning of the 'content' of any post or page
