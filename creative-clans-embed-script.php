@@ -3,7 +3,7 @@
 Plugin Name: Creative Clans Embed Script
 Plugin URI: http://www.creativeclans.nl
 Description: Gives the possibility to add scripts to the beginning and/or the end of the 'content' of any page or post. 
-Version: 1.1
+Version: 1.2
 Author: Guido Tonnaer
 Author URI: http://www.creativeclans.nl
 
@@ -84,10 +84,13 @@ function ccembedscript_insert_post($pID) {
 
   
   // Check permissions
-  if ( 'page' == $_POST['post_type'] ) {
+  if ( 'page' == $_POST['post_type'] ) 
+  {
     if ( !current_user_can( 'edit_page', $pID ) )
         return;
-  } else {
+  }
+  else
+  {
     if ( !current_user_can( 'edit_post', $pID ) )
         return;
   }
