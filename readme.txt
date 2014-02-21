@@ -3,7 +3,7 @@ Contributors: tonnaer
 Donate link: http://www.creativeclans.nl
 Tags: script, embed, plugin, creative clans
 Requires at least: 2.7
-Tested up to: 3.8
+Tested up to: 3.8.1
 Stable tag: 1.2
 
 A plugin to add scripts to the beginning and/or the end of the 'content' of any post or page. 
